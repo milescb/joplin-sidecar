@@ -1,0 +1,44 @@
+---
+import '../styles/shell.css';
+import Base from './Base.astro';
+import { getNotes, SITE_TITLE } from '../lib/db.js';
+
+interface Props {
+  title: string;
+  activeSlug?: string;
+}
+
+const { title, activeSlug } = Astro.props;
+const { notes } = await getNotes();
+---
+
+<Base title={title}>
+  <div class="shell">
+    <nav class="sidebar">
+      <a href="/" class="site-title">
+        <span class="site-icon">&#9672;</span>
+        <span>{SITE_TITLE}</span>
+      </a>
+      <div class="notebooks">
+        <div class="notebook">
+          <span class="notebook-label">Published Notes</span>
+          <ul>
+            {notes.map(note => (
+              <li>
+                <a
+                  href={`/${note.slug}`}
+                  class:list={['note-link', { active: note.slug === activeSlug }]}
+                >
+                  {note.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <main class="content">
+      <slot />
+    </main>
+  </div>
+</Base>

@@ -1,0 +1,31 @@
+---
+import Shell from '../layouts/Shell.astro';
+import '../styles/prose.css';
+import { getNotes, fetchNoteBody, SITE_TITLE } from '../lib/db.js';
+import { renderMarkdown } from '../lib/markdown.js';
+
+const { slug } = Astro.params;
+const { bySlug } = await getNotes();
+const note = bySlug[slug!];
+
+if (!note) {
+  return new Response(null, { status: 404 });
+}
+
+const body = await fetchNoteBody(note.hash);
+if (!body) {
+  return new Response(null, { status: 404 });
+}
+
+const content = await renderMarkdown(body);
+---
+
+<Shell title={`${note.title} \u2014 ${SITE_TITLE}`} activeSlug={slug}>
+  <article>
+    <header class="note-header">
+      <h1>{note.title}</h1>
+      <time class="note-date">{note.updatedAt}</time>
+    </header>
+    <div set:html={content} />
+  </article>
+</Shell>

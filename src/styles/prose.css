@@ -1,0 +1,156 @@
+/* prose.css — note content typography */
+
+article {
+  font-family: var(--font-sans);
+  line-height: 1.7;
+}
+
+.note-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+}
+
+.note-header h1 {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.35rem;
+}
+
+.note-date {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+article h1,
+article h2,
+article h3,
+article h4,
+article h5,
+article h6 {
+  font-family: var(--font-serif);
+  color: var(--text);
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+article h1 {
+  font-size: 1.9rem;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+
+article h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 2.25rem 0 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+article h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.4rem;
+}
+
+article h4,
+article h5,
+article h6 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.3rem;
+}
+
+article p {
+  margin-bottom: 1rem;
+}
+
+article a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+article blockquote {
+  margin: 1.25rem 0;
+  padding: 0.6rem 0 0.6rem 1.25rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin: 1.25rem 0;
+}
+
+article th,
+article td {
+  text-align: left;
+  padding: 9px 13px;
+  border-bottom: 1px solid var(--border);
+}
+
+article th {
+  font-weight: 600;
+  background: var(--surface);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+article img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  display: block;
+  margin: 1.25rem 0;
+}
+
+article hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.25rem 0;
+}
+
+article ul,
+article ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+article li {
+  margin-bottom: 0.25rem;
+}
+
+/* Task lists — remark-gfm adds .contains-task-list and .task-list-item */
+article ul.contains-task-list {
+  list-style: none;
+  padding-left: 0.25rem;
+}
+
+article li.task-list-item {
+  display: flex;
+  flex-wrap: wrap;         /* nested lists wrap to next row */
+  align-items: baseline;
+  gap: 0 0.5rem;
+}
+
+/* Force nested lists inside a task item onto their own row, indented */
+article li.task-list-item > ul,
+article li.task-list-item > ol {
+  flex-basis: 100%;
+  padding-left: 1.5rem;
+  margin-bottom: 0;
+}
+
+article input[type="checkbox"] {
+  flex-shrink: 0;
+  margin: 0;
+  accent-color: var(--accent);
+}

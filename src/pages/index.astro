@@ -1,0 +1,33 @@
+---
+import Shell from '../layouts/Shell.astro';
+import '../styles/index.css';
+import { getNotes, SITE_TITLE } from '../lib/db.js';
+
+const { notes } = await getNotes();
+---
+
+<Shell title={SITE_TITLE}>
+  <div class="index">
+    <div class="page-header">
+      <h1>{SITE_TITLE}</h1>
+      <p class="subtitle">Published notes</p>
+    </div>
+    <div class="recent">
+      <h2>Notes</h2>
+      {notes.length > 0 ? (
+        <ul class="recent-list">
+          {notes.map(n => (
+            <li>
+              <a href={`/${n.slug}`}>
+                <span>{n.title}</span>
+                <time>{n.updatedAt}</time>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="empty">No published notes yet.</p>
+      )}
+    </div>
+  </div>
+</Shell>

@@ -1,0 +1,74 @@
+/* index.css — index and 404 page styles */
+
+.index {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.page-header h1 {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.subtitle {
+  margin-top: 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.subtitle a {
+  color: var(--accent);
+}
+
+.recent h2 {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.recent-list {
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+
+.recent-list li {
+  border-bottom: 1px solid var(--border);
+}
+
+.recent-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  font-size: 0.9rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.recent-list a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.recent-list time {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.empty {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+}

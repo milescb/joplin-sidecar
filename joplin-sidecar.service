@@ -1,0 +1,28 @@
+[Unit]
+Description=Joplin notes sidecar (notes.milescb.com)
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/home/milescb/docker-joplin-config/.env
+Type=simple
+WorkingDirectory=/home/milescb/joplin-sidecar
+ExecStartPre=/usr/bin/npm run build
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=5
+
+# Postgres credentials — match what's in your Joplin docker-compose
+Environment=PG_HOST=127.0.0.1
+Environment=PG_PORT=5432
+Environment=PG_USER=joplin
+Environment=PG_PASSWORD=joplin
+Environment=PG_DATABASE=joplin
+
+# Sidecar config
+Environment=LISTEN_PORT=3456
+Environment=CACHE_TTL_MS=30000
+Environment="SITE_TITLE=My Notes"
+
+[Install]
+WantedBy=multi-user.target

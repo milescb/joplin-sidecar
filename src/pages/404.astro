@@ -1,0 +1,14 @@
+---
+import Shell from '../layouts/Shell.astro';
+import '../styles/index.css';
+import { SITE_TITLE } from '../lib/db.js';
+---
+
+<Shell title={`Not found \u2014 ${SITE_TITLE}`}>
+  <div class="index">
+    <div class="page-header">
+      <h1>Note not found</h1>
+      <p class="subtitle"><a href="/">Back to index</a></p>
+    </div>
+  </div>
+</Shell>

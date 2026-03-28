@@ -1,0 +1,23 @@
+{
+  "name": "joplin-notes-sidecar",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "astro build",
+    "dev": "astro dev",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@astrojs/node": "8.3.4",
+    "@shikijs/rehype": "^1.0.0",
+    "astro": "4.16.18",
+    "pg": "^8.11.0",
+    "rehype-katex": "^7.0.0",
+    "rehype-stringify": "^10.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.0.0",
+    "unified": "^11.0.0"
+  }
+}
