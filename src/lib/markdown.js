@@ -16,7 +16,7 @@ const md = unified()
   .use(remarkMath)
   .use(remarkRehype)
   .use(rehypeKatex)
-  .use(rehypeShiki, { theme: 'one-light' })
+  .use(rehypeShiki, { themes: { light: 'one-light', dark: 'one-dark-pro' } })
   .use(rehypeStringify);
 
 export async function renderMarkdown(body) {

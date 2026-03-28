@@ -125,17 +125,6 @@ Public hostname: notes.yourdomain.com
 Service:         HTTP  →  127.0.0.1:80
 ```
 
-## Node version
-
-Ubuntu 24.04 ships Node 18.19.1, which is one patch below Astro's stated minimum (`^18.17.1` for Astro 4.x). In practice the build works, but to avoid the engine warning install a supported version via [NodeSource](https://github.com/nodesource/distributions):
-
-```bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-```
-
-Then re-run `npm install && npm run build`.
-
 ## Development
 
 ```bash

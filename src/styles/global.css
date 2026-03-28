@@ -27,6 +27,10 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --font-serif: "Libre Baskerville", serif;
+    --font-sans:  "DM Sans", sans-serif;
+    --font-mono:  "DM Mono", monospace;
+
     --bg:           #1a1a1a;
     --surface:      #2d2d2d;
     --text:         #f0f0f0;
@@ -36,6 +40,9 @@
     --accent:       #ff6ec7;
     --accent-light: #ff85d5;
     --focus:        #a8d5ba;
+
+    --radius: 8px;
+    scroll-behavior: smooth;
   }
 }
 
@@ -95,6 +102,20 @@ pre {
   overflow-x: auto;
   font-size: 0.875rem;
   line-height: 1.65;
+  margin-bottom: 1.25rem;
+}
+
+/* Shiki dual-theme: light is default (no !important), dark overrides inline styles */
+.shiki, .shiki span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  .shiki, .shiki span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
 }
 
 pre code {
