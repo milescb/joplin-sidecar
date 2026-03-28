@@ -6,7 +6,7 @@
 //   PG_HOST, PG_PORT, PG_USER/POSTGRES_USER, PG_PASSWORD/POSTGRES_PASSWORD, PG_DATABASE
 //   LISTEN_PORT   - port to listen on (default 3456)
 //   CACHE_TTL_MS  - note list cache TTL (default 30000)
-//   SITE_TITLE    - site title displayed in nav (default "My Notes")
+//   SITE_TITLE    - site title displayed in nav (default "Notes")
 
 import http from 'http';
 import { handler } from './dist/server/entry.mjs';

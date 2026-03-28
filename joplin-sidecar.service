@@ -22,7 +22,7 @@ Environment=PG_DATABASE=joplin
 # Sidecar config
 Environment=LISTEN_PORT=3456
 Environment=CACHE_TTL_MS=30000
-Environment="SITE_TITLE=My Notes"
+Environment="SITE_TITLE=Notes"
 
 [Install]
 WantedBy=multi-user.target

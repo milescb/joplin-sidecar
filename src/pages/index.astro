@@ -4,19 +4,33 @@ import '../styles/index.css';
 import { getNotes, SITE_TITLE } from '../lib/db.js';
 
 const { notes } = await getNotes();
+
+const notebookMap = notes.reduce((acc, note) => {
+  if (!acc[note.folderTitle]) acc[note.folderTitle] = [];
+  acc[note.folderTitle].push(note);
+  return acc;
+}, {} as Record<string, typeof notes>);
+
+const sortedNotebooks = Object.entries(notebookMap)
+  .sort(([a], [b]) => a.localeCompare(b));
+
+const recentNotes = notes.slice(0, 5);
 ---
 
 <Shell title={SITE_TITLE}>
   <div class="index">
-    <div class="page-header">
+    <header class="page-header">
       <h1>{SITE_TITLE}</h1>
-      <p class="subtitle">Published notes</p>
-    </div>
-    <div class="recent">
-      <h2>Notes</h2>
-      {notes.length > 0 ? (
+      <p class="subtitle">
+        {notes.length} note{notes.length !== 1 ? 's' : ''} across {sortedNotebooks.length} notebook{sortedNotebooks.length !== 1 ? 's' : ''}
+      </p>
+    </header>
+
+    {recentNotes.length > 0 && (
+      <section class="recent">
+        <h2>Recently updated</h2>
         <ul class="recent-list">
-          {notes.map(n => (
+          {recentNotes.map(n => (
             <li>
               <a href={`/${n.slug}`}>
                 <span>{n.title}</span>
@@ -25,9 +39,28 @@ const { notes } = await getNotes();
             </li>
           ))}
         </ul>
-      ) : (
-        <p class="empty">No published notes yet.</p>
-      )}
-    </div>
+      </section>
+    )}
+
+    {sortedNotebooks.length > 0 ? (
+      <section class="notebook-grid">
+        {sortedNotebooks.map(([notebook, nbNotes]) => (
+          <div class="notebook-card">
+            <h3>{notebook}</h3>
+            <span class="count">{nbNotes.length} note{nbNotes.length !== 1 ? 's' : ''}</span>
+            <ul>
+              {nbNotes.slice(0, 6).map(n => (
+                <li><a href={`/${n.slug}`}>{n.title}</a></li>
+              ))}
+              {nbNotes.length > 6 && (
+                <li class="more">+{nbNotes.length - 6} more</li>
+              )}
+            </ul>
+          </div>
+        ))}
+      </section>
+    ) : (
+      <p class="empty">No published notes yet.</p>
+    )}
   </div>
 </Shell>

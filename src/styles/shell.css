@@ -59,6 +59,15 @@
   margin-bottom: 0.5rem;
 }
 
+details > summary.notebook-label {
+  list-style: none;
+  cursor: pointer;
+}
+
+details > summary.notebook-label::-webkit-details-marker {
+  display: none;
+}
+
 .notebook ul {
   list-style: none;
   padding: 0;

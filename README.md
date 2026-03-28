@@ -47,7 +47,7 @@ Set these in your systemd service or a `.env` file:
 | `PG_DATABASE` / `POSTGRES_DATABASE` | `joplin` | Database name |
 | `LISTEN_PORT` | `3456` | Port the Node server listens on |
 | `CACHE_TTL_MS` | `30000` | Note list cache TTL in milliseconds |
-| `SITE_TITLE` | `My Notes` | Title shown in the sidebar and index page |
+| `SITE_TITLE` | `Notes` | Title shown in the sidebar and index page |
 
 ## Deployment
 
@@ -72,7 +72,7 @@ files. Content changes (new/updated notes in Joplin) do **not** require a rebuil
 
 ```bash
 # With env vars inline:
-PG_PASSWORD=secret SITE_TITLE="My Notes" node server.js
+PG_PASSWORD=secret SITE_TITLE="Notes" node server.js
 
 # Or export them first, then:
 node server.js

@@ -72,3 +72,61 @@
   font-size: 0.9rem;
   margin-top: 0.75rem;
 }
+
+.notebook-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.notebook-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.notebook-card h3 {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+}
+
+.notebook-card .count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.notebook-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.notebook-card li {
+  font-size: 0.875rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.notebook-card li:last-child {
+  border-bottom: none;
+}
+
+.notebook-card li a {
+  color: var(--text);
+}
+
+.notebook-card li a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.notebook-card .more {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+}

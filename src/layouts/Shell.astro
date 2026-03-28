@@ -11,7 +11,19 @@ interface Props {
 
 const { title, activeSlug } = Astro.props;
 const { notes: rawNotes } = await getNotes();
-const notes = [...rawNotes].sort((a, b) => a.title.localeCompare(b.title));
+
+const notebookMap = rawNotes.reduce((acc, note) => {
+  if (!acc[note.folderTitle]) acc[note.folderTitle] = [];
+  acc[note.folderTitle].push(note);
+  return acc;
+}, {} as Record<string, typeof rawNotes>);
+
+const sortedNotebooks = Object.entries(notebookMap)
+  .sort(([a], [b]) => a.localeCompare(b));
+
+for (const [, notes] of sortedNotebooks) {
+  notes.sort((a, b) => a.title.localeCompare(b.title));
+}
 ---
 
 <Base title={title}>
@@ -22,21 +34,25 @@ const notes = [...rawNotes].sort((a, b) => a.title.localeCompare(b.title));
         <span>{SITE_TITLE}</span>
       </a>
       <div class="notebooks">
-        <div class="notebook">
-          <span class="notebook-label">Published Notes</span>
-          <ul>
-            {notes.map(note => (
-              <li>
-                <a
-                  href={`/${note.slug}`}
-                  class:list={['note-link', { active: note.slug === activeSlug }]}
-                >
-                  {note.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {sortedNotebooks.map(([notebook, notes]) => (
+          <div class="notebook">
+            <details open={notes.some(n => n.slug === activeSlug)}>
+              <summary class="notebook-label">{notebook}</summary>
+              <ul>
+                {notes.map(note => (
+                  <li>
+                    <a
+                      href={`/${note.slug}`}
+                      class:list={['note-link', { active: note.slug === activeSlug }]}
+                    >
+                      {note.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </div>
+        ))}
       </div>
     </nav>
     <main class="content">

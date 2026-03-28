@@ -4,7 +4,7 @@
 import pg from 'pg';
 const { Client } = pg;
 
-export const SITE_TITLE = process.env.SITE_TITLE || 'My Notes';
+export const SITE_TITLE = process.env.SITE_TITLE || 'Notes';
 
 const PG = {
   host:     process.env.PG_HOST       || '127.0.0.1',
@@ -28,7 +28,15 @@ export async function fetchSharedNotes() {
       SELECT DISTINCT ON (s.id)
         s.id                                             AS hash,
         convert_from(i.content, 'UTF8')::json->>'title' AS title,
-        i.updated_time
+        i.updated_time,
+        (
+          SELECT convert_from(f.content, 'UTF8')::json->>'title'
+          FROM items f
+          WHERE f.jop_id = i.jop_parent_id
+            AND f.jop_type = 2
+          ORDER BY f.updated_time DESC
+          LIMIT 1
+        ) AS folder_title
       FROM shares s
       JOIN items i ON i.jop_id = s.note_id
       WHERE s.type = 1
@@ -37,12 +45,13 @@ export async function fetchSharedNotes() {
     `);
     rows.sort((a, b) => Number(b.updated_time) - Number(a.updated_time));
     return rows.map((r) => ({
-      hash:      r.hash,
-      title:     r.title,
-      slug:      slugify(r.title),
-      updatedAt: new Date(Number(r.updated_time)).toLocaleDateString('en-US', {
-                   year: 'numeric', month: 'short', day: 'numeric',
-                 }),
+      hash:        r.hash,
+      title:       r.title,
+      slug:        slugify(r.title),
+      folderTitle: r.folder_title || 'Notes',
+      updatedAt:   new Date(Number(r.updated_time)).toLocaleDateString('en-US', {
+                     year: 'numeric', month: 'short', day: 'numeric',
+                   }),
     }));
   } finally {
     await client.end();
