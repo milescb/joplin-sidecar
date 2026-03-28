@@ -1,0 +1,9 @@
+/* footer.css — site-wide footer */
+
+.site-footer {
+  text-align: center;
+  padding: 2rem 1.5rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}

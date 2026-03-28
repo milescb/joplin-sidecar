@@ -1,6 +1,7 @@
 ---
 import '../styles/shell.css';
 import Base from './Base.astro';
+import Footer from '../components/Footer.astro';
 import { getNotes, SITE_TITLE } from '../lib/db.js';
 
 interface Props {
@@ -40,6 +41,7 @@ const notes = [...rawNotes].sort((a, b) => a.title.localeCompare(b.title));
     </nav>
     <main class="content">
       <slot />
+      <Footer />
     </main>
   </div>
 </Base>
