@@ -9,7 +9,8 @@ interface Props {
 }
 
 const { title, activeSlug } = Astro.props;
-const { notes } = await getNotes();
+const { notes: rawNotes } = await getNotes();
+const notes = [...rawNotes].sort((a, b) => a.title.localeCompare(b.title));
 ---
 
 <Base title={title}>
