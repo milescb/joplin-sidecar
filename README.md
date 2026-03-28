@@ -1,10 +1,18 @@
 # joplin-sidecar
 
-A dynamic web server that serves published [Joplin](https://joplinapp.org/) notes as a public website. It reads directly from Joplin's PostgreSQL database, renders markdown server-side (with math and syntax highlighting), and serves everything through an Astro SSR frontend.
+A dynamic web server that serves published [Joplin](https://joplinapp.org/) notes as a public 
+website. It reads directly from Joplin's PostgreSQL database, renders markdown server-side 
+(with math and syntax highlighting), and serves everything through an Astro SSR frontend.
 
 New notes appear automatically within the cache TTL — no rebuild required.
 
 ## How it works
+
+For this to properly work, you must be self-hosting Joplin server using the PostgreSQL database 
+with docker-compose; see the [offical documentation](https://hub.docker.com/r/joplin/server) for 
+instructions on getting this setup.
+
+Once setup, this application works like follows:
 
 ```
 Joplin desktop → Joplin Server (Docker) → PostgreSQL
@@ -15,15 +23,16 @@ Joplin desktop → Joplin Server (Docker) → PostgreSQL
                                     nginx → Cloudflare Tunnel → internet
 ```
 
-- Only notes marked as **shared** in Joplin (`shares.type = 1`) are served.
-- The note list is cached for `CACHE_TTL_MS` ms (default 30 s); the UI rebuilds only when `.astro` or CSS files change.
+- Only notes marked as **shared** in Joplin desktop app are served.
+- The note list is cached for `CACHE_TTL_MS` ms (default 30 s); the UI rebuilds only when `.astro` 
+or CSS files change.
 
 ## Prerequisites
 
-- Node.js `^18.17.1 || ^20.3.0 || >=21.0.0` (Ubuntu 24.04 ships 18.19.1 — see [Node version note](#node-version))
+- Node.js `^18.17.1 || ^20.3.0 || >=21.0.0`
 - Joplin Server running via Docker with PostgreSQL
 - nginx
-- A Cloudflare Tunnel pointed at `http://127.0.0.1:80`
+- A Cloudflare Tunnel pointed at `http://127.0.0.1:80` (or other proxy to expose website to the internet)
 
 ## Environment variables
 
@@ -56,7 +65,8 @@ npm install
 npm run build
 ```
 
-This compiles the Astro frontend to `dist/`. Re-run whenever you change `.astro`, CSS, or config files. Content changes (new/updated notes in Joplin) do **not** require a rebuild.
+This compiles the Astro frontend to `dist/`. Re-run whenever you change `.astro`, CSS, or config 
+files. Content changes (new/updated notes in Joplin) do **not** require a rebuild.
 
 ### 3. Run
 
@@ -79,7 +89,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now joplin-sidecar
 ```
 
-The service runs `npm run build` automatically before starting the server on every boot/restart. To apply UI changes without rebooting:
+The service runs `npm run build` automatically before starting the server on every boot/restart. 
+To apply UI changes without rebooting:
 
 ```bash
 sudo systemctl restart joplin-sidecar
@@ -87,7 +98,8 @@ sudo systemctl restart joplin-sidecar
 
 ## nginx configuration
 
-nginx sits between the Cloudflare Tunnel and the Node server. Because Cloudflare handles TLS, nginx only needs to listen on port 80.
+nginx sits between the Cloudflare Tunnel and the Node server. Because Cloudflare handles TLS, nginx 
+only needs to listen on port 80.
 
 Copy the included config:
 
@@ -118,7 +130,9 @@ server {
 
 ## Cloudflare Tunnel
 
-In the Cloudflare Zero Trust dashboard, create a tunnel with a public hostname pointing to `http://127.0.0.1:80`. No SSL certificates are needed on the server — Cloudflare terminates TLS at the edge.
+In the Cloudflare Zero Trust dashboard, create a tunnel with a public hostname pointing to 
+`http://127.0.0.1:80`. No SSL certificates are needed on the server — Cloudflare terminates 
+TLS at the edge.
 
 ```
 Public hostname: notes.yourdomain.com
@@ -131,4 +145,6 @@ Service:         HTTP  →  127.0.0.1:80
 npm run dev
 ```
 
-Starts the Astro dev server with hot-reload. Set environment variables before running (the dev server reads `process.env` directly — no `.env` file loading is built in, so either export them in your shell or use a tool like `dotenv-cli`).
+Starts the Astro dev server with hot-reload. Set environment variables before running 
+(the dev server reads `process.env` directly — no `.env` file loading is built in, so either export 
+them in your shell or use a tool like `dotenv-cli`).
