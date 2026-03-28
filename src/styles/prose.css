@@ -135,22 +135,30 @@ article ul.contains-task-list {
 }
 
 article li.task-list-item {
-  display: flex;
-  flex-wrap: wrap;         /* nested lists wrap to next row */
-  align-items: baseline;
-  gap: 0 0.5rem;
+  position: relative;
+  padding-left: 1.6rem;
+  list-style: none;
 }
 
-/* Force nested lists inside a task item onto their own row, indented */
+article li.task-list-item > input[type="checkbox"] {
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+/* remark-gfm wraps loose task item text in a <p> — strip margin */
+article li.task-list-item > p {
+  margin: 0;
+}
+
 article li.task-list-item > ul,
 article li.task-list-item > ol {
-  flex-basis: 100%;
-  padding-left: 1.5rem;
+  padding-left: 1rem;
   margin-bottom: 0;
 }
 
 article input[type="checkbox"] {
-  flex-shrink: 0;
-  margin: 0;
   accent-color: var(--accent);
 }
