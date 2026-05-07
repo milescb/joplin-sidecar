@@ -6,6 +6,17 @@ website. It reads directly from Joplin's PostgreSQL database, renders markdown s
 
 New notes appear automatically within the cache TTL — no rebuild required.
 
+## Example deployment
+
+Light theme:
+![Example light mode](.github/example_light.png)
+
+Dark theme:
+![Example dark mode](.github/example_dark.png)
+
+Home page:
+![Home page](.github/home.png)
+
 ## How it works
 
 For this to properly work, you must be self-hosting Joplin server using the PostgreSQL database 
