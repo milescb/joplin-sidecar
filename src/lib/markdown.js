@@ -18,7 +18,7 @@ const md = unified()
   .use(remarkRehype)
   .use(rehypeSlug)
   .use(rehypeKatex)
-  .use(rehypeShiki, { themes: { light: 'one-light', dark: 'one-dark-pro' } })
+  .use(rehypeShiki, { themes: { light: 'github-light', dark: 'github-dark' } })
   .use(rehypeStringify);
 
 export async function renderMarkdown(body) {

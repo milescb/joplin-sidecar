@@ -16,10 +16,9 @@
   --text:         #1a1a1a;
   --text-muted:   #666666;
   --border:       #e0e0e0;
-  --header:       #72a178;
+  --header:       #8c306a;
   --accent:       #cf327b;
   --accent-light: #d56097;
-  --focus:        #4a7c59;
 
   --radius: 8px;
   scroll-behavior: smooth;
@@ -36,10 +35,9 @@
     --text:         #f0f0f0;
     --text-muted:   #b0b0b0;
     --border:       #404040;
-    --header:       #72a178;
+    --header:       #ff6ec7;
     --accent:       #ff6ec7;
     --accent-light: #ff85d5;
-    --focus:        #a8d5ba;
 
     --radius: 8px;
     scroll-behavior: smooth;
@@ -75,13 +73,6 @@ a {
 
 a:hover {
   text-decoration: underline;
-}
-
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
-  border-radius: 3px;
 }
 
 code {
