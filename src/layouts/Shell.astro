@@ -1,5 +1,6 @@
 ---
 import '../styles/shell.css';
+import '../styles/forms.css';
 import Base from './Base.astro';
 import Footer from '../components/Footer.astro';
 import { getNotes, SITE_TITLE } from '../lib/db.js';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const { title, activeSlug } = Astro.props;
+const loggedIn = Boolean(Astro.locals.session);
 const { notes: rawNotes } = await getNotes();
 
 const notebookMap = rawNotes.reduce((acc, note) => {
@@ -54,6 +56,13 @@ for (const [, notes] of sortedNotebooks) {
           </div>
         ))}
       </div>
+      <div class="sidebar-account">
+        {loggedIn ? (
+          <button type="button" class="account-link" id="logout-button">Log out</button>
+        ) : (
+          <a href="/login" class="account-link">Log in to edit</a>
+        )}
+      </div>
     </nav>
     <main class="content">
       <slot />
@@ -61,3 +70,12 @@ for (const [, notes] of sortedNotebooks) {
     </main>
   </div>
 </Base>
+
+{loggedIn && (
+  <script>
+    document.getElementById('logout-button')?.addEventListener('click', async () => {
+      await fetch('/api/logout', { method: 'POST' });
+      window.location.href = '/';
+    });
+  </script>
+)}

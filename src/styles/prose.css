@@ -6,6 +6,10 @@ article {
 }
 
 .note-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
 }
@@ -22,6 +26,10 @@ article {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--text-muted);
+}
+
+.note-header .edit-link {
+  flex-shrink: 0;
 }
 
 article h1,

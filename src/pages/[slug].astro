@@ -1,7 +1,7 @@
 ---
 import Shell from '../layouts/Shell.astro';
 import '../styles/prose.css';
-import { getNotes, fetchNoteBody, SITE_TITLE } from '../lib/db.js';
+import { getNotes, fetchNoteBody, SITE_TITLE, canEditNote } from '../lib/db.js';
 import { renderMarkdown } from '../lib/markdown.js';
 
 const { slug } = Astro.params;
@@ -18,13 +18,17 @@ if (!body) {
 }
 
 const content = await renderMarkdown(body);
+const editable = canEditNote(Astro.locals.session, note);
 ---
 
 <Shell title={`${note.title} \u2014 ${SITE_TITLE}`} activeSlug={slug}>
   <article>
     <header class="note-header">
-      <h1>{note.title}</h1>
-      <time class="note-date">{note.updatedAt}</time>
+      <div>
+        <h1>{note.title}</h1>
+        <time class="note-date">{note.updatedAt}</time>
+      </div>
+      {editable && <a href={`/edit/${slug}`} class="edit-link">&#9998; Edit</a>}
     </header>
     <div set:html={content} />
   </article>

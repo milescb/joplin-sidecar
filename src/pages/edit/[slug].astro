@@ -1,0 +1,76 @@
+---
+import Shell from '../../layouts/Shell.astro';
+import '../../styles/prose.css';
+import '../../styles/forms.css';
+import { getNotes, fetchNoteBody, SITE_TITLE, canEditNote } from '../../lib/db.js';
+
+const { slug } = Astro.params;
+
+if (!Astro.locals.session) {
+  return Astro.redirect(`/login?redirect=${encodeURIComponent(`/edit/${slug}`)}`);
+}
+
+const { bySlug } = await getNotes();
+const note = bySlug[slug!];
+if (!note) {
+  return new Response(null, { status: 404 });
+}
+
+if (!canEditNote(Astro.locals.session, note)) {
+  return new Response(null, { status: 403 });
+}
+
+const body = await fetchNoteBody(note.hash);
+if (body == null) {
+  return new Response(null, { status: 404 });
+}
+---
+
+<Shell title={`Edit ${note.title} — ${SITE_TITLE}`} activeSlug={slug}>
+  <div class="form-page">
+    <header class="note-header">
+      <h1>Edit note</h1>
+    </header>
+    <form id="edit-form">
+      <label>
+        Title
+        <input type="text" name="title" value={note.title} required />
+      </label>
+      <label>
+        Body
+        <textarea name="body" rows="20">{body}</textarea>
+      </label>
+      <p class="form-error" id="edit-error" hidden></p>
+      <div class="form-actions">
+        <button type="submit">Save</button>
+        <a href={`/${slug}`} class="button-secondary">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+  <script define:vars={{ noteId: note.noteId, slug }}>
+    const form = document.getElementById('edit-form');
+    const errorEl = document.getElementById('edit-error');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.hidden = true;
+      const data = new FormData(form);
+      const res = await fetch(`/api/notes/${noteId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: data.get('title'), body: data.get('body') }),
+      });
+      if (res.ok) {
+        window.location.href = `/${slug}`;
+        return;
+      }
+      if (res.status === 401) {
+        window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
+        return;
+      }
+      const responseBody = await res.json().catch(() => ({}));
+      errorEl.textContent = responseBody.error || 'Failed to save note.';
+      errorEl.hidden = false;
+    });
+  </script>
+</Shell>

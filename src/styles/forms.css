@@ -1,0 +1,118 @@
+/* forms.css — login and edit-note form styles */
+
+.form-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-page h1 {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.form-hint {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.form-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-page label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.form-page input,
+.form-page textarea {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.55rem 0.75rem;
+}
+
+.form-page textarea {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.form-page input:focus,
+.form-page textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-error {
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.form-page button,
+.button-secondary {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: var(--radius);
+  padding: 0.55rem 1.1rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.form-page button {
+  background-color: var(--accent);
+  color: #fff;
+  align-self: flex-start;
+}
+
+.form-page button:hover {
+  background-color: var(--accent-light);
+}
+
+.button-secondary {
+  background: none;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.button-secondary:hover {
+  border-color: var(--text-muted);
+  text-decoration: none;
+}
+
+.edit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--accent);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.85rem;
+}
+
+.edit-link:hover {
+  background-color: var(--accent-light);
+  text-decoration: none;
+}

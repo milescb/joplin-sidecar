@@ -59,6 +59,23 @@ Set these in your systemd service or a `.env` file:
 | `LISTEN_PORT` | `3456` | Port the Node server listens on |
 | `CACHE_TTL_MS` | `30000` | Note list cache TTL in milliseconds |
 | `SITE_TITLE` | `Notes` | Title shown in the sidebar and index page |
+| `JOPLIN_SERVER_URL` | — | Public base URL of your Joplin Server (e.g. `https://joplin.milescb.com`), required for login/editing. Joplin Server checks the request's Host/Origin against its own `APP_BASE_URL`, so this must be the public hostname, not `127.0.0.1:<port>` |
+
+## Editing notes
+
+Logging in adds an **Edit** button to published notes you're allowed to edit. Edits are saved
+through Joplin Server's own sync API — the same one the desktop/mobile apps use — so the change
+is a normal, correctly-versioned note update that syncs back down to your other devices.
+`joplin-sidecar` never writes to the Postgres database directly; doing so would bypass Joplin's
+sync change-tracking and the edit would never reach your other clients.
+
+Only notes already shared are editable here — logging in never exposes or unlocks private notes.
+Permission to edit a given note follows Joplin's own sharing model: when a notebook is shared
+between multiple Joplin accounts, each collaborator has their own synced copy of every note in
+it, and any of them can edit any note in that notebook — same as in Joplin itself. There's no
+"admin" override that bypasses this: Joplin Server's item API only ever lets a logged-in account
+read/write items *it* owns, so the only way to grant one account edit access to a notebook is to
+actually share that notebook with it in Joplin.
 
 ## Deployment
 

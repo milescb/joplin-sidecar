@@ -27,6 +27,8 @@ export async function fetchSharedNotes() {
     const { rows } = await client.query(`
       SELECT DISTINCT ON (s.id)
         s.id                                             AS hash,
+        s.note_id                                        AS note_id,
+        i.owner_id                                       AS owner_id,
         convert_from(i.content, 'UTF8')::json->>'title' AS title,
         i.updated_time,
         (
@@ -36,7 +38,26 @@ export async function fetchSharedNotes() {
             AND f.jop_type = 2
           ORDER BY f.updated_time DESC
           LIMIT 1
-        ) AS folder_title
+        ) AS folder_title,
+        (
+          -- Who can edit this note: whoever owns any copy of it (jop_id can
+          -- have more than one items row — e.g. an older per-user mirrored
+          -- copy), PLUS anyone Joplin Server has granted access to one of
+          -- those copies via user_items — that's the same grant its own
+          -- sync API checks (ItemModel.loadByName joins user_items on the
+          -- requesting user, not owner_id), so a collaborator on a shared
+          -- notebook can edit a note there without having created it.
+          SELECT array_agg(DISTINCT uid) FROM (
+            SELECT c.owner_id AS uid
+            FROM items c
+            WHERE c.jop_id = i.jop_id AND c.jop_type = 1
+            UNION
+            SELECT ui.user_id AS uid
+            FROM user_items ui
+            JOIN items c ON c.id = ui.item_id
+            WHERE c.jop_id = i.jop_id AND c.jop_type = 1
+          ) collaborators
+        ) AS collaborator_ids
       FROM shares s
       JOIN items i ON i.jop_id = s.note_id
       WHERE s.type = 1
@@ -45,8 +66,11 @@ export async function fetchSharedNotes() {
     `);
     rows.sort((a, b) => Number(b.updated_time) - Number(a.updated_time));
     return rows.map((r) => ({
-      hash:        r.hash,
-      title:       r.title,
+      hash:            r.hash,
+      noteId:          r.note_id,
+      ownerId:         r.owner_id,
+      collaboratorIds: r.collaborator_ids || [r.owner_id],
+      title:           r.title,
       slug:        slugify(r.title),
       folderTitle: r.folder_title || 'Notes',
       updatedAt:   new Date(Number(r.updated_time)).toLocaleDateString('en-US', {
@@ -89,4 +113,18 @@ export async function getNotes() {
   cache = { notes, bySlug, at: Date.now() };
   console.log(`[${new Date().toISOString()}] Refreshed: ${notes.length} shared note(s)`);
   return cache;
+}
+
+export function invalidateNotesCache() {
+  cache.at = 0;
+}
+
+// session: { id, userId, email } from the joplin_session cookie (see
+// middleware.ts), or null if logged out. A user can edit a note if they own
+// it or Joplin Server has granted them access to it via user_items (see the
+// collaborator_ids query above) — matching exactly who the real sync API
+// will let touch it.
+export function canEditNote(session, note) {
+  if (!session || !note) return false;
+  return note.collaboratorIds.includes(session.userId);
 }
